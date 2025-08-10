@@ -1,0 +1,80 @@
+
+# energynet
+energynet:
+  repre_model: roberta
+  decomposition: 'no' # candidate: x_y, pairwise, no
+  loss_type: triplet # candidate: triplet, supervised, NCE
+  
+  # triplet 관련
+  loss_fully_separate: False
+  weight_fully_separate: 0.1
+
+  loss_subset_ordering: False
+  weight_subset_ordering: 0.01
+  
+  loss_con_incon_ordering: False
+  weight_con_incon_ordering: 0.1
+
+  loss_incon_incon_ordering: False
+  weight_incon_incon_ordering: 0.1
+
+  # NCE 관련
+  one_pos_vs_many_neg: False
+  many_pos_vs_one_neg: True
+
+  lr: 0.000001
+  epoch: 15
+  fine_tuning_epoch: 30
+
+  triplet:
+    margin: 0.1
+    fully_separate_margin: 0.001
+    
+  supervised:
+    loss: CE
+
+locate:
+  type: subtraction # subtraction, gradnorm, recursive_subtraction
+
+# baseline model
+baseline:
+  type: llm
+    # if you want to use llama, then write the model name as: 
+    # "llama-[version]-[size]", e.g., "llama-3.1-8b"
+  model: llama-3-8b 
+  shot_num: 0
+  prediction_type: all_in_one # candidate: "all_in_one", "one_to_one", "many_to_one"
+  locate_type: all_in_one
+
+# dataset
+lconvqa:
+  stepwise_dataset_train_num: 6754 # max 6754
+  stepwise_dataset_eval_num: 200 # max 2251
+  stepwise_dataset_eval2_num: 200 # max 1126
+  stepwise_dataset_test_num: 200 # max 1126
+  # stepwise_dataset_train_num: 10
+  # stepwise_dataset_eval_num: 10
+  # stepwise_dataset_eval2_num: 10
+  # stepwise_dataset_test_num: 10
+
+
+set_nli:
+  stepwise_dataset_train_num: 6227 # max 6227
+  stepwise_dataset_eval_num: 200 # max 2065
+  stepwise_dataset_eval2_num: 200 # max 1025
+  stepwise_dataset_test_num: 200 # max 1039
+  # stepwise_dataset_train_num: 10
+  # stepwise_dataset_eval_num: 10
+  # stepwise_dataset_eval2_num: 10
+  # stepwise_dataset_test_num: 10
+
+
+pairwise: arbitrary_pairs # one of 'arbitrary_pairs', 'two_pairs'
+
+seed: 1014 # 바꾸지 마세요
+batch_size: 4
+time_key: ''
+
+eval:
+  batch_size: 1
+  pairwise: arbitrary_pairs

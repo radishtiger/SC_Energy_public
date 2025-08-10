@@ -1,0 +1,75 @@
+
+# energynet
+energynet:
+  repre_model: roberta
+  decomposition: 'no'
+  loss_type: margin # candidate: margin, supervised
+  
+  # margin settings
+  loss_fully_separate: False
+  weight_fully_separate: 0.1
+
+  loss_subset_ordering: False
+  weight_subset_ordering: 0.01
+  
+  loss_con_incon_ordering: False
+  weight_con_incon_ordering: 0.1
+
+  loss_incon_incon_ordering: False
+  weight_incon_incon_ordering: 0.1
+
+
+  lr: 0.000001
+  epoch: 15
+  fine_tuning_epoch: 30
+
+  margin:
+    margin: 0.1
+    fully_separate_margin: 0.001
+    
+  supervised:
+    loss: CE
+
+locate:
+  type: subtraction # subtraction
+
+# baseline model
+baseline:
+  type: llm
+  model: gpt-4o-mini 
+  shot_num: 0
+  prediction_type: all_in_one # candidate: "all_in_one", "one_to_one", "many_to_one"
+  locate_type: all_in_one
+
+# dataset
+lconvqa:
+  stepwise_dataset_train_num: 6754 # max 6754
+  stepwise_dataset_eval_num: 200 # max 2251
+  stepwise_dataset_eval2_num: 200 # max 1126
+  stepwise_dataset_test_num: 200 # max 1126
+  # stepwise_dataset_train_num: 10
+  # stepwise_dataset_eval_num: 10
+  # stepwise_dataset_eval2_num: 10
+  # stepwise_dataset_test_num: 10
+
+
+set_nli:
+  stepwise_dataset_train_num: 6227 # max 6227
+  stepwise_dataset_eval_num: 200 # max 2065
+  stepwise_dataset_eval2_num: 200 # max 1025
+  stepwise_dataset_test_num: 200 # max 1039
+  # stepwise_dataset_train_num: 10
+  # stepwise_dataset_eval_num: 10
+  # stepwise_dataset_eval2_num: 10
+  # stepwise_dataset_test_num: 10
+
+
+pairwise: arbitrary_pairs # one of 'arbitrary_pairs', 'two_pairs'
+
+seed: 1014 # do not change
+batch_size: 4
+time_key: ''
+
+eval:
+  batch_size: 1
+  pairwise: arbitrary_pairs

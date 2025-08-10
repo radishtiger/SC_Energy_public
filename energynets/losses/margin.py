@@ -2,7 +2,7 @@ import math
 import torch
 import torch.nn as nn
 
-class triplet(nn.Module):
+class margin(nn.Module):
     def __init__(self, params):
         super().__init__()
         self.params = params
@@ -18,8 +18,8 @@ class triplet(nn.Module):
         self.weight_incon_incon_ordering = self.params['energynet']['weight_incon_incon_ordering']
         self.weight_con_incon_ordering = self.params['energynet']['weight_con_incon_ordering']
         
-        self.margin = self.params['energynet']['triplet']['margin']
-        self.full_separation_margin = self.params['energynet']['triplet']['fully_separate_margin']
+        self.margin = self.params['energynet']['margin']['margin']
+        self.full_separation_margin = self.params['energynet']['margin']['fully_separate_margin']
         self.ReLU = nn.ReLU()
         
     def forward(self, pos_pair, neg_pair = None):
@@ -37,7 +37,7 @@ class triplet(nn.Module):
         if e_pos.shape != e_neg.shape:
             loss = self.ReLU(e_pos[:1] - e_neg[:1] + self.margin)
         else:
-            loss = self.ReLU(e_pos - e_neg + self.margin) # triplet loss for energtNet
+            loss = self.ReLU(e_pos - e_neg + self.margin) # margin loss for energynet
         loss = torch.sum(loss) / len(loss)
 
         if self.full_separation == True:

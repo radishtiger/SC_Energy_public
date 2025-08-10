@@ -3,9 +3,9 @@
 energynet:
   repre_model: roberta
   decomposition: 'no' # candidate: x_y, pairwise, no
-  loss_type: triplet # candidate: triplet, supervised, NCE
+  loss_type: margin # candidate: margin, supervised
   
-  # triplet settings
+  # margin settings
   loss_fully_separate: False
   weight_fully_separate: 0.1
 
@@ -18,15 +18,12 @@ energynet:
   loss_incon_incon_ordering: False
   weight_incon_incon_ordering: 0.1
 
-  # NCE settings
-  one_pos_vs_many_neg: False
-  many_pos_vs_one_neg: True
 
   lr: 0.000001
   epoch: 15
   fine_tuning_epoch: 30
 
-  triplet:
+  margin:
     margin: 0.1
     fully_separate_margin: 0.001
     
@@ -34,14 +31,12 @@ energynet:
     loss: CE
 
 locate:
-  type: subtraction # subtraction, gradnorm, recursive_subtraction
+  type: subtraction # subtraction
 
 # baseline model
 baseline:
   type: llm
-    # if you want to use llama, then write the model name as: 
-    # "llama-[version]-[size]", e.g., "llama-3.1-8b"
-  model: llama-3-8b 
+  model: gpt-4o-mini 
   shot_num: 0
   prediction_type: all_in_one # candidate: "all_in_one", "one_to_one", "many_to_one"
   locate_type: all_in_one

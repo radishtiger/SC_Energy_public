@@ -82,7 +82,7 @@ params = {
     "energynet": {
         "repre_model": "roberta",
         "decomposition": "no",
-        "loss_type": "triplet",
+        "loss_type": "margin",
         "loss_fully_separate": False,
         "weight_fully_separate": 0.1,
         "loss_subset_ordering": False,
@@ -91,10 +91,7 @@ params = {
         "weight_con_incon_ordering": 0.1,
         "loss_incon_incon_ordering": False,
         "weight_incon_incon_ordering": 0.1,
-        # NCE-related settings
-        "one_pos_vs_many_neg": False,
-        "many_pos_vs_one_neg": True,
-        "triplet": {"margin": 0.1, "fully_separate_margin": 0.001},
+        "margin": {"margin": 0.1, "fully_separate_margin": 0.001},
         "output_form": "real_num",
     },
     "locate": {"type": None},

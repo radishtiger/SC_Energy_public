@@ -33,8 +33,6 @@ def parser_add(parser, mode="train"):
     parser.add_argument("--loss_subset_ordering", type=bool, default=False)
     parser.add_argument("--loss_con_incon_ordering", type=bool, default=False)
     parser.add_argument("--loss_incon_incon_ordering", type=bool, default=False)
-    parser.add_argument("--one_pos_vs_many_neg", type=bool, default=False)
-    parser.add_argument("--many_pos_vs_one_neg", type=bool, default=False)
     parser.add_argument("--task", type=str)
     parser.add_argument("--dataset", type=str)
     parser.add_argument("--scratch", type=bool, default=False)
@@ -77,8 +75,6 @@ def params_add(args, mode="train"):
         "loss_subset_ordering",
         "loss_con_incon_ordering",
         "loss_incon_incon_ordering",
-        "one_pos_vs_many_neg",
-        "many_pos_vs_one_neg",
         "repre_model",
         "decomposition",
     )
@@ -112,13 +108,11 @@ def params_add(args, mode="train"):
             params["locate"][r] = getattr(args, r)
 
     # Additional configs
-    if params["energynet"]["loss_type"] in {
-        "supervised",
-    }:
+    if params["energynet"]["loss_type"] == "supervised":
         params["energynet"]["output_form"] = "2dim_vec"
         print(f"loss type: {params['energynet']['loss_type']}")
 
-    elif params["energynet"]["loss_type"] in {"triplet", "NCE"}:
+    elif params["energynet"]["loss_type"] == "margin":
         params["energynet"]["output_form"] = "real_num"
         print(f"loss type: {params['energynet']['loss_type']}")
 

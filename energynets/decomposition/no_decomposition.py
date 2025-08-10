@@ -31,12 +31,8 @@ class no_decomposition(nn.Module):
         
         # print("inputs:", inputs)
         inputs = self.tokenizer.batch_encode_plus(inputs, padding=True, truncation = True, add_special_tokens = False)
-        if self.params['locate']['type'] == 'gradnorm':
-            e_val, hidden_states = self.representation_model(inputs)
-            return e_val, hidden_states
-        else:
-            e_val = self.representation_model(inputs)
-            return e_val, None
+        e_val = self.representation_model(inputs)
+        return e_val, None
 
     def set_representation_model(self, representation_model):
         self.representation_model = representation_model

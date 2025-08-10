@@ -17,20 +17,19 @@ If PyTorch installation fails, install the GPU-enabled build following the instr
 
 Download the required datasets and place them under the `datasets` directory:
 
-- **L-ConVQA**: [Logical ConVQA](https://arijitray1993.github.io/ConVQA/Logical_ConVQA.zip)
-- **MuSiQue**: [MuSiQue on Hugging Face](https://huggingface.co/datasets/voidful/MuSiQue)
+  - **L-ConVQA**: [Logical ConVQA](https://arijitray1993.github.io/ConVQA/Logical_ConVQA.zip)
 
 ## Training
 
 Example command for training an energy model:
 
 ```bash
-python train_wdb_Set_Contrastive.py \
-  --task vqa \
-  --dataset lconvqa \
-  --loss_type triplet \
-  --decomposition no \
-  --repre_model roberta
+  python train_wdb_Set_Contrastive.py \
+    --task vqa \
+    --dataset lconvqa \
+    --loss_type margin \
+    --decomposition no \
+    --repre_model roberta
 ```
 
 The resulting model is stored in `results/task/dataset/job_id/`.
@@ -40,13 +39,13 @@ The resulting model is stored in `results/task/dataset/job_id/`.
 To evaluate a trained energy model:
 
 ```bash
-python evaluate.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --repre_model roberta
+  python evaluate.py --task vqa --dataset lconvqa --loss_type margin --decomposition no --repre_model roberta
 ```
 
 Baseline models can be evaluated with:
 
 ```bash
-python evaluate_baseline.py --task vqa --dataset lconvqa --type llm --model llama-2-7b --shot_num 1
+  python evaluate_baseline.py --task vqa --dataset lconvqa --type llm --model gpt-4o-mini --shot_num 1
 ```
 
 ## Locate
@@ -54,7 +53,7 @@ python evaluate_baseline.py --task vqa --dataset lconvqa --type llm --model llam
 To run the locate procedure on a trained energy model:
 
 ```bash
-python locate.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --time_key <time-key-of-model>
+  python locate.py --task vqa --dataset lconvqa --loss_type margin --decomposition no --time_key <time-key-of-model>
 ```
 
 ## SLURM Example
@@ -70,7 +69,7 @@ Example `sbatch` script for a single GPU on Linux:
 
 module load anaconda
 conda activate set_consistency
-python train_wdb_Set_Contrastive.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --repre_model roberta
+  python train_wdb_Set_Contrastive.py --task vqa --dataset lconvqa --loss_type margin --decomposition no --repre_model roberta
 ```
 
 ## License

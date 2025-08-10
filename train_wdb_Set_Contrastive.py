@@ -55,7 +55,7 @@ sweep_configuration = {
     "parameters": {
         "lossNet_lr": {"values": [pow(10, -1 * i) for i in range(6, 7)]},
         # roberta-base trains well when the exponent falls within range(5, 8)
-        "triplet_margin": {"values": [pow(10, -1 * i) for i in range(2, 3)]},
+        "margin": {"values": [pow(10, -1 * i) for i in range(2, 3)]},
         # roberta-base performs well when the exponent is within range(1, 3)
     },
 }
@@ -84,14 +84,14 @@ def main():
     wandb.init(config=params)
     wandb.run.name = runname
     # params['energynet']['lr'] = 0.1
-    # params['energynet']['triplet']['margin'] = 0.001
+    # params['energynet']['margin']['margin'] = 0.001
     params["energynet"]["lr"] = wandb.config.lossNet_lr
-    params["energynet"]["triplet"]["margin"] = wandb.config.triplet_margin
+    params["energynet"]["margin"]["margin"] = wandb.config.margin
 
     wandb.run.save()
     # print(f"runname: {wandb.run.name}")
     print(f"lossNet_lr: {params['energynet']['lr']}")
-    print(f"triplet_margin: {params['energynet']['triplet']['margin']}")
+    print(f"margin: {params['energynet']['margin']['margin']}")
     print()
 
     # Define and initialize the energy network

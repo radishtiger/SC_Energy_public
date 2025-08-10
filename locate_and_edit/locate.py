@@ -1,5 +1,4 @@
 import torch.nn as nn
-from .locate_modules.locate_by_gradnorm import locate_by_gradnorm
 from .locate_modules.locate_by_subtraction import locate_by_subtraction
 
 
@@ -14,10 +13,7 @@ class locate(nn.Module):
         self.initialize(energynet)
 
     def initialize(self, energynet):
-        if self.locate_type == "gradnorm":
-            self.locate_method = locate_by_gradnorm(self.params, energynet)
-            print("locate by gradnorm")
-        elif "subtraction" in self.locate_type:
+        if "subtraction" in self.locate_type:
             self.locate_method = locate_by_subtraction(self.params, energynet)
             print("locate by subtraction")
         else:

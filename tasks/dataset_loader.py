@@ -1,9 +1,7 @@
 import itertools, random
 import numpy as np
 from torch.utils.data import Dataset
-from .multi_hop.musique import musique_dataset
 from .vqa.lconvqa import l_convqa_dataset, l_convqa_fine_grained_dataset
-from .vqa.lconvqa import l_convqa_dataset
 from .nli.set_nli import set_nli_dataset
 
 
@@ -18,10 +16,6 @@ def dataset_loader(
             dataset = l_convqa_dataset(
                 params, split, consistency, additional_info["pairwise"]
             )
-
-    elif params["task"] == "multi-hop":
-        if params["dataset"] == "musique":
-            dataset = musique_dataset(params, split)
 
     elif params["task"] == "nli":
         if params["dataset"] == "set_nli":
@@ -89,10 +83,6 @@ def dataset_loader_fine_grained(
                     output_form,
                     input_type,
                 )
-
-        elif params["task"] == "multi-hop":
-            if params["dataset"] == "musique":
-                dataset = musique_dataset(params, split)
 
         elif params["task"] == "nli":
             if params["dataset"] == "set_nli":

@@ -8,10 +8,7 @@ class roberta(nn.Module):
 
     def __init__(self, params):
         super(roberta, self).__init__()
-        if params['locate']['type'] == 'gradnorm':
-            self.RoBERTa = RobertaModel.from_pretrained('roberta-base', output_hidden_states=True)
-        else:
-            self.RoBERTa = RobertaModel.from_pretrained('roberta-base')
+        self.RoBERTa = RobertaModel.from_pretrained('roberta-base')
         self.tokenizer = RobertaTokenizerFast.from_pretrained("roberta-base")
         self.ReLU = nn.ReLU()
         self.params = params
@@ -60,12 +57,7 @@ class roberta(nn.Module):
         output = self.linear1(output)
         
         if self.output_form == 'real_num':
-            if self.params['locate']['type'] == 'gradnorm': 
-                hidden_states = output_all['hidden_states'][0] ## return hidden states of embedding layer
-                return (output), hidden_states
-                
-            else:
-                return (output)
+            return (output)
         elif self.output_form == '2dim_vec':
             return output
         

@@ -1138,45 +1138,6 @@ def locate_energy(locate_net, dataloader, device="cpu", params=None):
             pred_list.extend(additional_info["pred"])
             gold_list.extend(additional_info["gold"])
 
-    elif params["locate"]["type"] == "gradnorm":
-
-        # inference
-        gradient_norm_list = []
-        for pairs in tqdm(dataloader):
-            inputs = [p[0] for p in pairs]
-            golds = [p[1] for p in pairs]
-
-            original_text.extend(inputs)
-
-            inputs = locate_net.locate_method.tokenizer.batch_encode_plus(
-                inputs, padding="max_length", add_special_tokens=False
-            )
-
-            # directly calling representation model to avoid OOM error
-            output, hidden_states = (
-                locate_net.locate_method.energynet.energy_model.representation_model(
-                    inputs
-                )
-            )
-            locate_result = locate_net.locate_method.locate(
-                inputs, output, hidden_states
-            )
-
-            pred = locate_result["prediction_list"]
-            gold = golds
-
-            correct = 0
-            for p, g in zip(pred, gold):
-                if p == g:
-                    correct += 1
-
-            accuracy = correct / len(pred)
-            total_accuracy += accuracy
-            result_text.extend(locate_result["prediction_list_text"])
-            pred_list.extend(locate_result["prediction_list"])
-            gold_list.extend(gold)
-            gradient_norm_list.extend(locate_result["token_gradient_norm_list"])
-
     # loss
     if data_len == 0:
         acc = 1
@@ -1196,14 +1157,12 @@ def locate_energy(locate_net, dataloader, device="cpu", params=None):
     result["original_text"] = original_text
     result["masked_text"] = result_text
     result["pred"] = pred_list
-    if params["locate"]["type"] == "gradnorm":
-        result["gradient_norm"] = gradient_norm_list
 
     return result
 
 
 def locate_baseline(model, dataloader, device="cpu", params=None):
-    """Evaluate the locate performance of baseline models such as GPT and LLaMA.
+    """Evaluate the locate performance of baseline models such as GPT.
 
     Args:
         model (_type_): _description_

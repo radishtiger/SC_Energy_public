@@ -1,4 +1,4 @@
-# Set Consistency Energy
+# Set Consistency Energy Networks
 
 **Official code for the ACL 2025 Oral paper:**  
 _[Introducing Verification Task of Set Consistency with Set-Consistency Energy Networks]_  

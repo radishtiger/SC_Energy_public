@@ -1,67 +1,78 @@
-- How to train
-    -- 
-    * step 1. Determine the arguments
+# Set Consistency Energy
 
-        *  loss_type (e.x., triplet loss. Default = triplet)
-        * decomposition (e.x., pairwise, x-y, no. Default = no)
-        * representation model (e.x., RoBERTa, Longformer. Default = roberta)
-        * task (e.x., multi-hop, vqa)
-        * dataset (e.x., musique, lconvqa)
-    
-    * step 2. Train the model using the arguments in step 1:
-        
-        * example:
-        
-            * python train.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --repre_model roberta
-        * If you want to train the model with "WandB", then utilize the "train_wdb.py" instead of "train.py"
+This repository provides the official implementation for the ACL paper on Set Consistency Energy Networks. The code enables training, evaluation, and analysis of energy-based models that operate on sets of examples.
 
-    * By default, the pre-trained model will be stored at:
-        
-        * results/task/dataset/{repre-model}-{decomposition}-{loss_type}
+## Environment
 
-- How to evaluate the pre-trained model
-    -- 
-    - Step 1. Similar to the training stage, determine the arguments you want.
-    - Step 2. Evaluate the model using "evaluate.py":
-        
-        * example:
-            * python evaluate.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --repre_model roberta
+Create and activate the conda environment:
 
-- How to evaluate the baseline model
-    -- 
-    - Step 1. Similar to the training stage, determine the arguments you want.
-        
-        - In here, the arguments you should determine are:
-        - task
-        - dataset
-        - type
-        - model
-        - shot_num
-    - Step 2. Evaluate the model using "evaluate_baseline.py":
-        
-        * example:
-            * python evaluate_baseline.py --task vqa --dataset lconvqa --type llm --model llama-2-7b --shot_num 1
+```bash
+conda env create -f env.yml
+conda activate set_consistency
+```
 
+If PyTorch installation fails, install the GPU-enabled build following the instructions at [pytorch.org](https://pytorch.org/get-started/locally/).
 
-- How to run locate
-    - Step 1. Make sure you have an energy model already trained.
-    - Step 2. Update config.yaml to set the right hyperparameters for locate method.
-    - Step 2. Run the following script.
-        * example: 
-            * python locate.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --time_key <time-key-of-energy-model>
+## Datasets
 
-- Setup
-    -- 
-    - conda env create -f env.yaml
-    - conda activate set_consistency
+Download the required datasets and place them under the `datasets` directory:
 
-    - If it fails, then:
+- **L-ConVQA**: [Logical ConVQA](https://arijitray1993.github.io/ConVQA/Logical_ConVQA.zip)
+- **MuSiQue**: [MuSiQue on Hugging Face](https://huggingface.co/datasets/voidful/MuSiQue)
 
-        * 1. Install the gpu-version of pytorch (https://pytorch.org/get-started/locally/)
-        * 2. pip install -r requirements.txt
+## Training
 
-- download datasets
-    --
-    - download the following datasets, and upload at "datasets" folder.
-    - L-ConVQA dataset: https://arijitray1993.github.io/ConVQA/Logical_ConVQA.zip    
-    - Musique dataset: https://huggingface.co/datasets/voidful/MuSiQue
+Example command for training an energy model:
+
+```bash
+python train_wdb_Set_Contrastive.py \
+  --task vqa \
+  --dataset lconvqa \
+  --loss_type triplet \
+  --decomposition no \
+  --repre_model roberta
+```
+
+The resulting model is stored in `results/task/dataset/job_id/`.
+
+## Evaluation
+
+To evaluate a trained energy model:
+
+```bash
+python evaluate.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --repre_model roberta
+```
+
+Baseline models can be evaluated with:
+
+```bash
+python evaluate_baseline.py --task vqa --dataset lconvqa --type llm --model llama-2-7b --shot_num 1
+```
+
+## Locate
+
+To run the locate procedure on a trained energy model:
+
+```bash
+python locate.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --time_key <time-key-of-model>
+```
+
+## SLURM Example
+
+Example `sbatch` script for a single GPU on Linux:
+
+```bash
+#!/bin/bash
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
+#SBATCH --time=12:00:00
+
+module load anaconda
+conda activate set_consistency
+python train_wdb_Set_Contrastive.py --task vqa --dataset lconvqa --loss_type triplet --decomposition no --repre_model roberta
+```
+
+## License
+
+This project is released under the MIT License.

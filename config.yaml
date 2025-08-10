@@ -5,7 +5,7 @@ energynet:
   decomposition: 'no' # candidate: x_y, pairwise, no
   loss_type: triplet # candidate: triplet, supervised, NCE
   
-  # triplet 관련
+  # triplet settings
   loss_fully_separate: False
   weight_fully_separate: 0.1
 
@@ -18,7 +18,7 @@ energynet:
   loss_incon_incon_ordering: False
   weight_incon_incon_ordering: 0.1
 
-  # NCE 관련
+  # NCE settings
   one_pos_vs_many_neg: False
   many_pos_vs_one_neg: True
 
@@ -71,7 +71,7 @@ set_nli:
 
 pairwise: arbitrary_pairs # one of 'arbitrary_pairs', 'two_pairs'
 
-seed: 1014 # 바꾸지 마세요
+seed: 1014 # do not change
 batch_size: 4
 time_key: ''
 
